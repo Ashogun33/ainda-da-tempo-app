@@ -3,14 +3,21 @@ import Home from './screens/Home'
 import Diagnostic from './screens/Diagnostic'
 import Result from './screens/Result'
 import NextStep from './screens/NextStep'
-import { getDiagnosticResult } from './data/diagnosticRules'
+import { getDiagnosticResult } from './logic/diagnosticEngine'
 
 export default function App() {
   const [screen, setScreen] = useState('home')
   const [step, setStep] = useState(1)
   const [answers, setAnswers] = useState({
-    situation: '',
-    focus: '',
+    pain: '',
+    emotion: '',
+    numbers: {
+      renda: '',
+      essencial: '',
+      dividas: '',
+      variavel: '',
+      futuro: '',
+    },
   })
 
   function handleStart() {
@@ -22,8 +29,15 @@ export default function App() {
     setScreen('home')
     setStep(1)
     setAnswers({
-      situation: '',
-      focus: '',
+      pain: '',
+      emotion: '',
+      numbers: {
+        renda: '',
+        essencial: '',
+        dividas: '',
+        variavel: '',
+        futuro: '',
+      },
     })
   }
 
@@ -34,18 +48,45 @@ export default function App() {
     }))
   }
 
+  function handleNumberChange(field, value) {
+    setAnswers((prev) => ({
+      ...prev,
+      numbers: {
+        ...prev.numbers,
+        [field]: value,
+      },
+    }))
+  }
+
   function handleContinue() {
-    if (step === 1 && answers.situation) {
+    if (step === 1 && answers.pain) {
       setStep(2)
       return
     }
 
-    if (step === 2 && answers.focus) {
+    if (step === 2 && answers.emotion) {
+      setStep(3)
+      return
+    }
+
+    if (step === 3) {
+      const diagnostic = getDiagnosticResult(answers)
+
+      if (diagnostic.error) {
+        alert(diagnostic.error)
+        return
+      }
+
       setScreen('result')
     }
   }
 
   function handleBack() {
+    if (step === 3) {
+      setStep(2)
+      return
+    }
+
     if (step === 2) {
       setStep(1)
       return
@@ -69,6 +110,7 @@ export default function App() {
         onCancel={handleRestart}
         onContinue={handleContinue}
         onSelect={handleSelect}
+        onNumberChange={handleNumberChange}
       />
     )
   }
