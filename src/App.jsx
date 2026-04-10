@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import Home from './screens/Home'
 import Diagnostic from './screens/Diagnostic'
 import Result from './screens/Result'
-import NextStep from './screens/NextStep'
 import { getDiagnosticResult } from './logic/diagnosticEngine'
 
 export default function App() {
@@ -116,25 +115,7 @@ export default function App() {
   }
 
   if (screen === 'result') {
-    return (
-      <Result
-        result={result}
-        answers={answers}
-        onRestart={handleRestart}
-        onNextStep={() => setScreen('next-step')}
-      />
-    )
-  }
-
-  if (screen === 'next-step') {
-    return (
-      <NextStep
-        result={result}
-        answers={answers}
-        onBackToResult={() => setScreen('result')}
-        onRestart={handleRestart}
-      />
-    )
+    return <Result result={result} onRestart={handleRestart} />
   }
 
   return null

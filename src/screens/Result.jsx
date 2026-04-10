@@ -1,4 +1,8 @@
-export default function Result({ result, onRestart, onNextStep }) {
+export default function Result({ result, onRestart }) {
+  function handleOpenGuide() {
+    window.open('https://ashogun.com.br/guia', '_self')
+  }
+
   if (result?.error) {
     return (
       <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
@@ -99,16 +103,17 @@ export default function Result({ result, onRestart, onNextStep }) {
 
           <div className="mt-8">
             <p className="text-base leading-7 text-zinc-300">
-              {result.cta_base}
+              Um material simples para te ajudar a começar a organizar sua vida
+              financeira na prática.
             </p>
           </div>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <button
-              onClick={onNextStep}
+              onClick={handleOpenGuide}
               className="rounded-xl bg-yellow-400 px-6 py-3 font-semibold text-black transition hover:scale-[1.02]"
             >
-              Ver próximo passo
+              Quero meu guia gratuito
             </button>
 
             <button
